@@ -10,9 +10,6 @@ public class Score : MonoBehaviour
     private void Update()
     {
         if (!PlayerController.died)
-        {
-            string a = PlayerController.coins.ToString();
-            myText.text = (a);
-        }
+            myText.text = (PlayerController.coins.ToString());
     }
 }

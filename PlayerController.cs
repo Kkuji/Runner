@@ -43,15 +43,12 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (!helloEnded)
-        {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Start"))
-                helloEnded = true;
-        }
+        if (!helloEnded && !animator.GetCurrentAnimatorStateInfo(0).IsName("Start"))
+            helloEnded = true;
+
         if (play && !died)
         {
             tap = swipeDown = swipeUp = swipeLeft = swipeRight = false;
-
             if (Input.GetMouseButtonDown(0))
             {
                 tap = true;
@@ -79,6 +76,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
             swipeDelta = Vector2.zero;
+
             if (isDraging)
             {
                 if (Input.touches.Length < 0)
@@ -86,6 +84,7 @@ public class PlayerController : MonoBehaviour
                 else if (Input.GetMouseButton(0))
                     swipeDelta = (Vector2)Input.mousePosition - startTouch;
             }
+
             if (swipeDelta.magnitude > 90)
             {
                 float x = swipeDelta.x;
@@ -94,9 +93,7 @@ public class PlayerController : MonoBehaviour
                 {
 
                     if (x < 0)
-                    {
                         swipeLeft = true;
-                    }
                     else
                         swipeRight = true;
                 }
@@ -109,6 +106,7 @@ public class PlayerController : MonoBehaviour
                         swipeUp = true;
                 }
             }
+
             if (swipeDown && slideDone && helloEnded)
             {
                 slideDone = false;
@@ -119,21 +117,18 @@ public class PlayerController : MonoBehaviour
             if (swipeUp && helloEnded && jumpDone)
             {
                 jumpDone = false;
+                Debug.Log(jumpDone);
                 Reset();
                 animator.SetTrigger("Up");
             }
-            Debug.Log(jumpDone);
 
             dir = 0;
 
             if (swipeLeft)
-            {
                 dir = -1;
-            }
             else if (swipeRight)
-            {
                 dir = 1;
-            }
+
             if (helloEnded && !isInMovement && (((dir > 0) && (mid != 1)) || (dir < 0) & (mid != -1)))
             {
                 currentDir = dir;
@@ -158,6 +153,7 @@ public class PlayerController : MonoBehaviour
                     mid++;
                     StartCoroutine(GoRight());
                 }
+
                 if ((dir < 0) && (mid > -1) && (slideDone) && (jumpDone))
                 {
                     isInMovement = true;
@@ -181,7 +177,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     IEnumerator GoLeft()
     {
         Reset();
@@ -194,14 +189,12 @@ public class PlayerController : MonoBehaviour
             cc.Move(Vector3.right * currentDir * tmpDist);
             currentDistance -= tmpDist;
         }
+
         if (transform.position.x > 10f)
-        {
             transform.position = new Vector3(11f, transform.position.y, transform.position.z);
-        }
         else if (transform.position.x > 8f)
-        {
             transform.position = new Vector3(9.62f, transform.position.y, transform.position.z);
-        }
+
         isInMovement = false;
     }
 
@@ -217,14 +210,12 @@ public class PlayerController : MonoBehaviour
             cc.Move(Vector3.right * currentDir * tmpDist);
             currentDistance -= tmpDist;
         }
+
         if (transform.position.x > 11.6f)
-        {
             transform.position = new Vector3(12.38f, transform.position.y, transform.position.z);
-        }
         else if (transform.position.x > 10f)
-        {
             transform.position = new Vector3(11f, transform.position.y, transform.position.z);
-        }
+
         isInMovement = false;
     }
     IEnumerator GoSlide()
@@ -239,19 +230,17 @@ public class PlayerController : MonoBehaviour
             currentDistance -= tmpDist;
         }
         slideDone = true;
-        jumpDone = true;
     }
     public void StartLevel()
     {
         play = true;
         EnviromentMoves = true;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (play)
         {
-            if (other.tag == "Danger" && OneTimeDeath)
+            if (other.CompareTag("Danger") && OneTimeDeath)
             {
                 OneTimeDeath = false;
                 PauseButton.SetActive(false);
@@ -263,16 +252,15 @@ public class PlayerController : MonoBehaviour
                 helloEnded = false;
                 EnviromentMoves = false;
             }
-            if (other.tag == "Coin")
+
+            if (other.CompareTag("Coin"))
             {
                 Destroy(other.gameObject);
                 collisionSound.Play();
-                coinSound.transform.position = transform.position;
-                coinSound.transform.position = new Vector3(coinSound.transform.position.x, coinSound.transform.position.y + 0.4f, coinSound.transform.position.z);
+                coinSound.transform.position = new Vector3(transform.position.x, transform.position.y + 0.4f, transform.position.z);
                 coinSound.Play();
                 coins++;
             }
-
         }
     }
 
@@ -285,10 +273,10 @@ public class PlayerController : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.CompareTag("Ground") && k == 0 && !jumpDone && slideDone)
+        if (hit.gameObject.CompareTag("Ground") && k == 0 && !jumpDone)
         {
             k++;
-            Invoke("JumpTrue", 1.25f);
+            Invoke(nameof(JumpTrue), 1.25f);
         }
     }
 
@@ -297,5 +285,4 @@ public class PlayerController : MonoBehaviour
         jumpDone = true;
         k--;
     }
-
 }

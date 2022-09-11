@@ -40,9 +40,8 @@ public class WorldController : MonoBehaviour
         if (PlayerController.EnviromentMoves)
         {
             if (timer)
-            {
                 StartCoroutine(MakeHarder());
-            }
+
             transform.position -= Vector3.forward * speed * Time.deltaTime;
         }
     }
@@ -52,6 +51,7 @@ public class WorldController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1f);
+
             if (OnPlatformMovement != null)
                 OnPlatformMovement();
         }

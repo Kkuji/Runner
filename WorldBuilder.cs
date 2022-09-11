@@ -11,8 +11,6 @@ public class WorldBuilder : MonoBehaviour
 
     private float dif = 1.38f;
     private MeshRenderer MeshRPlatf;
-    private Color MeshRPlatf3;
-    private Renderer MeshRPlatf2;
     private Vector3 delta;
     private Vector3 pos2;
     private bool isObstacle;
@@ -32,15 +30,15 @@ public class WorldBuilder : MonoBehaviour
     {
         CreateFreePlatform();
         CreateFreePlatform();
+
         for (int i = 0; i < 7; i++)
-        {
             CreatePlatform();
-        }
     }
     public void CreatePlatform()
     {
         if (NumberObstaclesInARow == -1)
             NumberObstaclesInARow = Random.Range(2, 5);
+
         if (isObstacle && NumberObstaclesInARow < 1)
         {
             CreateFreePlatform();
@@ -57,6 +55,7 @@ public class WorldBuilder : MonoBehaviour
         Vector3 pos = (lastPlatform == null) ?
             platformContainer.position :
             lastPlatform.GetComponent<PlatformController>().endPoint.position;
+
         int index = Random.Range(0, freePlatforms.Length);
         GameObject res = Instantiate(freePlatforms[index], pos, Quaternion.identity, platformContainer);
         lastPlatform = res.transform;
@@ -80,7 +79,6 @@ public class WorldBuilder : MonoBehaviour
         Vector3 pos = lastPlatform.GetComponent<PlatformController>().endPoint.position;
         int index = Random.Range(0, obstaclePlatforms.Length);
         GameObject res = Instantiate(obstaclePlatforms[index], pos, Quaternion.identity, platformContainer);
-
         lastPlatform = res.transform;
         lastPlatform.transform.position = new Vector3(res.transform.position.x, res.transform.position.y, res.transform.position.z + delta.z / 2);
         isObstacle = true;

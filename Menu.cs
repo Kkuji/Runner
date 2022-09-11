@@ -57,6 +57,7 @@ public class Menu : MonoBehaviour
         {
             backgroundMelody.Play();
             PauseUnPause(false);
+
             if (PlayerController.helloEnded)
                 PlayerController.EnviromentMoves = true;
         }
@@ -111,6 +112,7 @@ public class Menu : MonoBehaviour
         PlayerController.play = !c;
         pause = !c;
         EndRun.SetActive(c);
+
         if (!newLevel)
         {
             MusicController.SetActive(c);

@@ -16,9 +16,8 @@ public class Cameraa : MonoBehaviour
         Mathf.Clamp(objToFollow.position.x, 10f, 12f) + deltaPos.x,
         Mathf.Clamp(objToFollow.position.y, 8.654921f, 8.654923f),
         objToFollow.position.z + deltaPos.z);
+
         if (Input.GetKeyUp(KeyCode.Escape))
-        {
             Cursor.lockState = CursorLockMode.None;
-        }
     }
 }
